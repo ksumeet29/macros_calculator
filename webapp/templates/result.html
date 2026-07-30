@@ -32,7 +32,7 @@
           <label class="method-select">
             <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
               TDEE method
-              <span class="info-icon" title="Total Daily Energy Expenditure (TDEE) is your maintenance calories after activity, and macros are then built around that target.">&#9432;</span>
+              <span class="info-icon" tabindex="0" data-tooltip="Total Daily Energy Expenditure (TDEE) is your maintenance calories after activity, and macros are then built around that target.">&#9432;</span>
             </div>
             <select name="tdee_method">
               <option value="1" {% if inputs.tdee_method == '1' %}selected{% endif %}>Mifflin-St Jeor</option>
@@ -43,7 +43,7 @@
         <button type="submit" class="submit-btn small">Recalculate</button>
       </form>
 
-      <h2>Basal Metabolic Rate (BMR) <span class="info-icon" title="Basal Metabolic Rate (BMR) is the energy your body needs at complete rest.">&#9432;</span></h2>
+      <h2>Basal Metabolic Rate (BMR) <span class="info-icon" tabindex="0" data-tooltip="Basal Metabolic Rate (BMR) is the energy your body needs at complete rest.">&#9432;</span></h2>
       <div class="result-grid">
         <div class="result-item">
           <span class="label">Mifflin-St Jeor </span>
@@ -102,5 +102,35 @@
       <a class="back-link" href="{{ url_for('index') }}">&larr; Start over</a>
     {% endif %}
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var icons = document.querySelectorAll('.info-icon[data-tooltip]');
+
+      function closeAll(except) {
+        icons.forEach(function (icon) {
+          if (icon !== except) icon.classList.remove('active');
+        });
+      }
+
+      icons.forEach(function (icon) {
+        icon.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var isActive = icon.classList.contains('active');
+          closeAll(icon);
+          icon.classList.toggle('active', !isActive);
+        });
+        icon.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            icon.click();
+          }
+        });
+      });
+
+      document.addEventListener('click', function () {
+        closeAll(null);
+      });
+    });
+  </script>
 </body>
 </html>

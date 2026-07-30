@@ -170,6 +170,7 @@ input:focus, select:focus {
 }
 
 .info-icon {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -182,6 +183,46 @@ input:focus, select:focus {
   color: var(--purple);
   margin-left: 4px;
   cursor: help;
+}
+
+.info-icon::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 240px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.info-icon:hover::after,
+.info-icon:focus::after,
+.info-icon.active::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 480px) {
+  .info-icon::after {
+    max-width: 60vw;
+    left: auto;
+    right: -8px;
+    transform: none;
+  }
 }
 
 .info-box {
